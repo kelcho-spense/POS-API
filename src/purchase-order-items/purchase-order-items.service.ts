@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePurchaseOrderItemDto } from './dto/create-purchase-order-item.dto';
+import { CreatePurchaseOrderItemDto } from '../purchase-orders/dto/purchase-order.dto';
 import { UpdatePurchaseOrderItemDto } from './dto/update-purchase-order-item.dto';
 
 @Injectable()

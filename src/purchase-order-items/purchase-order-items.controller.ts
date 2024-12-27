@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PurchaseOrderItemsService } from './purchase-order-items.service';
-import { CreatePurchaseOrderItemDto } from './dto/create-purchase-order-item.dto';
+import { CreatePurchaseOrderItemDto } from '../purchase-orders/dto/purchase-order.dto';
 import { UpdatePurchaseOrderItemDto } from './dto/update-purchase-order-item.dto';
 
 @Controller('purchase-order-items')

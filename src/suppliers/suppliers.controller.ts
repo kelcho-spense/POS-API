@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { SuppliersService } from './suppliers.service';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { CreateSupplierDto } from './dto/supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 
 @Controller('suppliers')

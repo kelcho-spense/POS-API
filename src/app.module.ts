@@ -20,6 +20,7 @@ import { SalesModule } from './sales/sales.module';
 import { SaleItemsModule } from './sale-items/sale-items.module';
 import { StockManagementModule } from './stock-management/stock-management.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { SuppliersModule } from './suppliers/suppliers.module';
     SaleItemsModule,
     StockManagementModule,
     SuppliersModule,
+    AuditLogModule,
   ],
   providers: [
     AppService,
