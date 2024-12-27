@@ -51,7 +51,7 @@ export class AuthService {
   async updateRefreshToken(userId: number, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.databaseService.user.update({
-      where: { id: userId },
+      where: { userId },
       data: {
         refresh_token_hash: hashedRefreshToken,
       },
@@ -81,18 +81,20 @@ export class AuthService {
       // create a new user without a refresh token
       const newUser = await this.databaseService.user.create({
         data: {
+          fullName: createUserData.fullName,
           username: createUserData.username,
           email: createUserData.email,
-          password_hash: hashedPassword,
+          passwordHash: hashedPassword,
           role: createUserData.role,
+          companyId: createUserData.companyId,
         },
       });
 
       // Generate tokens
-      const tokens = await this.getTokens(newUser.id, newUser.email);
+      const tokens = await this.getTokens(newUser.userId, newUser.email);
 
       // save hashed refresh token
-      await this.updateRefreshToken(newUser.id, tokens.refresh_token);
+      await this.updateRefreshToken(newUser.userId, tokens.refresh_token);
 
       return tokens;
     } catch (error) {
@@ -110,16 +112,16 @@ export class AuthService {
     //compare passwords
     const passMatch = await bcrypt.compare(
       AuthData.password,
-      user.password_hash,
+      user.passwordHash,
     );
 
     if (!passMatch) throw new UnauthorizedException('Invalid credentials');
 
     // Generate tokens
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.userId, user.email);
 
     // save hashed refresh token
-    await this.updateRefreshToken(user.id, tokens.refresh_token);
+    await this.updateRefreshToken(user.userId, tokens.refresh_token);
     return tokens;
   }
 
@@ -127,7 +129,7 @@ export class AuthService {
     // get user via id & if hashedRT is not null then set it to null
     await this.databaseService.user.updateMany({
       where: {
-        id: userId,
+        userId,
         refresh_token_hash: {
           not: null,
         },
@@ -141,7 +143,7 @@ export class AuthService {
   async refresh(userId: number, refreshToken: string) {
     //find the user via unique id
     const user = await this.databaseService.user.findUnique({
-      where: { id: userId },
+      where: { userId },
     });
 
     if (!user) throw new ForbiddenException('Access denied');
@@ -156,10 +158,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid refresh token');
 
     // Generate tokens
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.userId, user.email);
 
     // save hashed refresh token
-    await this.updateRefreshToken(user.id, tokens.refresh_token);
+    await this.updateRefreshToken(user.userId, tokens.refresh_token);
 
     return tokens;
   }

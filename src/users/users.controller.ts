@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/user.dto';
-import { Role, User } from '@prisma/client';
+import { UserRole, User } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -20,7 +20,8 @@ export class UsersController {
 
   @Get() // GET /users or GET /users?limit=10&role=admin
   findAll(
-    @Query('role', new ParseEnumPipe(Role, { optional: true })) role?: Role,
+    @Query('role', new ParseEnumPipe(UserRole, { optional: true }))
+    role?: UserRole,
     @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
   ): Promise<User[]> {
     return this.usersService.findAll(role, limit);

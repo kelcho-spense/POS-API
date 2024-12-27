@@ -85,13 +85,14 @@ model User {
   userId         Int              @id @default(autoincrement())
   companyId      Int
   role           UserRole         @default(CASHIER)
-  username       String           @unique
+  username       String?           @unique
   passwordHash   String
-  fullName       String?
-  email          String?          @unique
+  fullName       String
+  email          String          @unique
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-
+  access_token_hash  String?
+  refresh_token_hash String?
   // Relations
   company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
   stockMovements   StockMovement[]  @relation("performedBy")

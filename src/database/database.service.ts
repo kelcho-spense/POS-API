@@ -20,5 +20,4 @@ export class DatabaseService extends PrismaClient implements OnModuleInit {
   async onModuleDestroy() {
     await this.$disconnect();
   }
-  
 }

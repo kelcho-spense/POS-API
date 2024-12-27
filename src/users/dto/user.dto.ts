@@ -1,11 +1,20 @@
+// user.dto.ts
+
 import { PartialType } from '@nestjs/mapped-types';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Role } from '@prisma/client';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { UserRole } from '@prisma/client';
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
-  username: string;
+  fullName: string;
 
   @IsNotEmpty()
   @IsEmail({}, { message: 'Invalid email' })
@@ -15,10 +24,19 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsEnum(Role, {
-    message: 'Invalid role. Must be one of: INTERN, ENGINEER, ADMIN',
+  @IsEnum(UserRole, {
+    message:
+      'Invalid role. Must be one of: ADMIN, MANAGER, CASHIER, INVENTORY_CLERK, ACCOUNTANT, AUDITOR, SUPPORT_STAFF, MARKETING_MANAGER, SUPPLIER',
   })
-  role: Role;
+  role: UserRole;
+
+  @IsOptional()
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  companyId: number;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
