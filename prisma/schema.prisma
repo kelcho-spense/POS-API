@@ -1,0 +1,314 @@
+// POS schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Ensure this environment variable is set with your PostgreSQL connection string
+}
+
+// ==========================
+// ENUM Definitions
+// ==========================
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  CASHIER
+  INVENTORY_CLERK
+  ACCOUNTANT
+  AUDITOR
+  SUPPORT_STAFF
+  MARKETING_MANAGER
+  SUPPLIER
+}
+
+enum MovementType {
+  ADDITION
+  SUBTRACTION
+  ADJUSTMENT
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  MOBILE_PAYMENT
+  OTHER
+}
+
+enum SaleStatus {
+  COMPLETED
+  REFUNDED
+  PENDING
+}
+
+enum PurchaseOrderStatus {
+  PENDING
+  RECEIVED
+  CANCELED
+}
+
+enum Operation {
+  INSERT
+  UPDATE
+  DELETE
+}
+
+// ==========================
+// Model Definitions
+// ==========================
+
+model Company {
+  companyId    Int       @id @default(autoincrement())
+  companyName  String
+  address      String?
+  phone        String?
+  email        String?
+  taxId        String?
+  createdAt    DateTime  @default(now())
+
+  // Relations
+  users            User[]
+  categories       Category[]
+  suppliers        Supplier[]
+  products         Product[]
+  customers        Customer[]
+  inventory        Inventory[]
+  purchaseOrders   PurchaseOrder[]
+  sales            Sale[]
+}
+
+model User {
+  userId         Int              @id @default(autoincrement())
+  companyId      Int
+  role           UserRole         @default(CASHIER)
+  username       String           @unique
+  passwordHash   String
+  fullName       String?
+  email          String?          @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Relations
+  company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  stockMovements   StockMovement[]  @relation("performedBy")
+  purchaseOrders   PurchaseOrder[]  @relation("createdBy")
+  sales            Sale[]           @relation("userSales")
+  auditLogs        AuditLog[]       @relation("changedBy")
+
+  @@index([companyId], name: "idx_users_company")
+  @@index([role], name: "idx_users_role")
+}
+
+model Category {
+  categoryId   Int       @id @default(autoincrement())
+  companyId    Int
+  categoryName String
+  description  String?
+  createdAt    DateTime  @default(now())
+
+  // Relations
+  company      Company   @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  products     Product[]
+}
+
+model Supplier {
+  supplierId      Int               @id @default(autoincrement())
+  companyId       Int
+  supplierName    String
+  contactPerson   String?
+  email           String?           @unique
+  phone           String?
+  address         String?
+  createdAt       DateTime          @default(now())
+
+  // Relations
+  company         Company           @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  products        Product[]
+  purchaseOrders  PurchaseOrder[]
+}
+
+model Product {
+  productId    Int          @id @default(autoincrement())
+  companyId    Int
+  categoryId   Int?
+  supplierId   Int?
+  productName  String
+  description  String?
+  sku          String?      @unique
+  unitPrice    Decimal      @db.Decimal(10, 2)
+  taxRate      Decimal      @default(0.00) @db.Decimal(4, 2)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // Relations
+  company        Company        @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  category       Category?      @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
+  supplier       Supplier?      @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
+  inventory      Inventory?
+  saleItems      SaleItem[]
+  purchaseOrderItems PurchaseOrderItem[]
+  
+  @@index([companyId], name: "idx_products_company")
+  @@index([categoryId], name: "idx_products_category")
+  @@index([supplierId], name: "idx_products_supplier")
+}
+
+model Customer {
+  customerId    Int       @id @default(autoincrement())
+  companyId     Int
+  firstName     String
+  lastName      String
+  email         String?   @unique
+  phone         String?
+  address       String?
+  registeredAt  DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  company       Company   @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  sales         Sale[]
+}
+
+model Inventory {
+  inventoryId   Int          @id @default(autoincrement())
+  productId     Int          @unique
+  companyId     Int
+  quantity      Int          @default(0)
+  reorderLevel  Int          @default(0)
+  lastUpdated   DateTime     @default(now())
+
+  // Relations
+  product        Product        @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  company        Company        @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  stockMovements StockMovement[]
+
+  @@index([productId], name: "idx_inventory_product")
+  @@index([companyId], name: "idx_inventory_company")
+}
+
+model StockMovement {
+  movementId      Int          @id @default(autoincrement())
+  inventoryId     Int
+  movementType    MovementType
+  quantityChange  Int
+  reference       String?
+  movementDate    DateTime     @default(now())
+  performedById   Int?
+
+  // Relations
+  inventory        Inventory  @relation(fields: [inventoryId], references: [inventoryId], onDelete: Cascade)
+  performedBy      User?      @relation("performedBy", fields: [performedById], references: [userId])
+  
+  @@index([inventoryId], name: "idx_stock_movements_inventory")
+}
+
+model PurchaseOrder {
+  purchaseOrderId      Int                 @id @default(autoincrement())
+  companyId            Int
+  supplierId           Int?
+  orderDate            DateTime            @default(now())
+  expectedDeliveryDate DateTime?
+  status               PurchaseOrderStatus @default(PENDING)
+  totalAmount          Decimal             @db.Decimal(10, 2)
+  createdById          Int?
+  updatedAt            DateTime            @updatedAt
+
+  // Relations
+  company              Company             @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  supplier             Supplier?           @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
+  createdBy            User?               @relation("createdBy", fields: [createdById], references: [userId])
+  purchaseOrderItems   PurchaseOrderItem[]
+  
+  @@index([companyId], name: "idx_purchase_orders_company")
+  @@index([supplierId], name: "idx_purchase_orders_supplier")
+}
+
+model PurchaseOrderItem {
+  purchaseOrderItemId Int          @id @default(autoincrement())
+  purchaseOrderId     Int
+  productId           Int?
+  quantity            Int
+  unitPrice           Decimal      @db.Decimal(10, 2)
+  subtotal            Decimal      @db.Decimal(10, 2)
+
+  // Relations
+  purchaseOrder       PurchaseOrder @relation(fields: [purchaseOrderId], references: [purchaseOrderId], onDelete: Cascade)
+  product             Product?      @relation(fields: [productId], references: [productId], onDelete: SetNull)
+  
+  @@index([purchaseOrderId], name: "idx_purchase_order_items_purchase_order")
+  @@index([productId], name: "idx_purchase_order_items_product")
+}
+
+model Sale {
+  saleId       Int          @id @default(autoincrement())
+  companyId    Int
+  customerId   Int?
+  userId       Int?
+  saleDate     DateTime     @default(now())
+  subtotal     Decimal      @db.Decimal(10, 2)
+  taxAmount    Decimal      @default(0.00) @db.Decimal(10, 2)
+  totalAmount  Decimal      @db.Decimal(10, 2)
+  status       SaleStatus   @default(COMPLETED)
+
+  // Relations
+  company      Company      @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  customer     Customer?    @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
+  user         User?        @relation("userSales", fields: [userId], references: [userId], onDelete: SetNull)
+  saleItems    SaleItem[]
+  payments     Payment[]
+
+  @@index([companyId], name: "idx_sales_company")
+  @@index([customerId], name: "idx_sales_customer")
+  @@index([userId], name: "idx_sales_user")
+}
+
+model SaleItem {
+  saleItemId    Int       @id @default(autoincrement())
+  saleId        Int
+  productId     Int?
+  quantity      Int
+  unitPrice     Decimal   @db.Decimal(10, 2)
+  taxAmount     Decimal   @default(0.00) @db.Decimal(10, 2)
+  subtotal      Decimal   @db.Decimal(10, 2)
+
+  // Relations
+  sale          Sale      @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
+  product       Product?  @relation(fields: [productId], references: [productId], onDelete: SetNull)
+  
+  @@index([saleId], name: "idx_sale_items_sale")
+  @@index([productId], name: "idx_sale_items_product")
+}
+
+model Payment {
+  paymentId          Int            @id @default(autoincrement())
+  saleId             Int
+  paymentDate        DateTime       @default(now())
+  amount             Decimal        @db.Decimal(10, 2)
+  paymentMethod      PaymentMethod
+  paymentReference   String?
+
+  // Relations
+  sale               Sale           @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
+  
+  @@index([saleId], name: "idx_payments_sale")
+}
+
+model AuditLog {
+  auditId     Int        @id @default(autoincrement())
+  tableName   String
+  recordId    Int
+  operation   Operation
+  changedAt   DateTime   @default(now())
+  changedById Int?
+  oldData     Json?
+  newData     Json?
+
+  // Relations
+  changedBy   User?      @relation("changedBy", fields: [changedById], references: [userId])
+
+  @@index([tableName, recordId], name: "idx_audit_logs_table_record")
+}
