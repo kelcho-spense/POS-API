@@ -25,7 +25,7 @@ enum UserRole {
   SUPPLIER
 }
 
-enum MovementType {
+enum ManagementType {
   ADDITION
   SUBTRACTION
   ADJUSTMENT
@@ -62,7 +62,7 @@ enum Operation {
 // ==========================
 
 model Company {
-  companyId    Int       @id @default(autoincrement())
+  companyId    String       @id @default(uuid())
   companyName  String
   address      String?
   phone        String?
@@ -83,7 +83,7 @@ model Company {
 
 model User {
   userId         Int              @id @default(autoincrement())
-  companyId      Int
+  companyId      String
   role           UserRole         @default(CASHIER)
   username       String?           @unique
   passwordHash   String
@@ -95,7 +95,7 @@ model User {
   refresh_token_hash String?
   // Relations
   company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  stockMovements   StockMovement[]  @relation("performedBy")
+  stockMovements   StockManagement[]  @relation("performedBy")
   purchaseOrders   PurchaseOrder[]  @relation("createdBy")
   sales            Sale[]           @relation("userSales")
   auditLogs        AuditLog[]       @relation("changedBy")
@@ -106,7 +106,7 @@ model User {
 
 model Category {
   categoryId   Int       @id @default(autoincrement())
-  companyId    Int
+  companyId    String
   categoryName String
   description  String?
   createdAt    DateTime  @default(now())
@@ -118,7 +118,7 @@ model Category {
 
 model Supplier {
   supplierId      Int               @id @default(autoincrement())
-  companyId       Int
+  companyId       String
   supplierName    String
   contactPerson   String?
   email           String?           @unique
@@ -134,7 +134,7 @@ model Supplier {
 
 model Product {
   productId    Int          @id @default(autoincrement())
-  companyId    Int
+  companyId    String
   categoryId   Int?
   supplierId   Int?
   productName  String
@@ -160,7 +160,7 @@ model Product {
 
 model Customer {
   customerId    Int       @id @default(autoincrement())
-  companyId     Int
+  companyId     String
   firstName     String
   lastName      String
   email         String?   @unique
@@ -177,7 +177,7 @@ model Customer {
 model Inventory {
   inventoryId   Int          @id @default(autoincrement())
   productId     Int          @unique
-  companyId     Int
+  companyId     String
   quantity      Int          @default(0)
   reorderLevel  Int          @default(0)
   lastUpdated   DateTime     @default(now())
@@ -185,31 +185,31 @@ model Inventory {
   // Relations
   product        Product        @relation(fields: [productId], references: [productId], onDelete: Cascade)
   company        Company        @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  stockMovements StockMovement[]
+  stockMovements StockManagement[]
 
   @@index([productId], name: "idx_inventory_product")
   @@index([companyId], name: "idx_inventory_company")
 }
 
-model StockMovement {
-  movementId      Int          @id @default(autoincrement())
+model StockManagement {
+  managementId      Int          @id @default(autoincrement())
   inventoryId     Int
-  movementType    MovementType
+  managementType    ManagementType
   quantityChange  Int
   reference       String?
-  movementDate    DateTime     @default(now())
+  managementDate    DateTime     @default(now())
   performedById   Int?
 
   // Relations
   inventory        Inventory  @relation(fields: [inventoryId], references: [inventoryId], onDelete: Cascade)
   performedBy      User?      @relation("performedBy", fields: [performedById], references: [userId])
   
-  @@index([inventoryId], name: "idx_stock_movements_inventory")
+  @@index([inventoryId], name: "idx_stock_managements_inventory")
 }
 
 model PurchaseOrder {
   purchaseOrderId      Int                 @id @default(autoincrement())
-  companyId            Int
+  companyId            String
   supplierId           Int?
   orderDate            DateTime            @default(now())
   expectedDeliveryDate DateTime?
@@ -246,7 +246,7 @@ model PurchaseOrderItem {
 
 model Sale {
   saleId       Int          @id @default(autoincrement())
-  companyId    Int
+  companyId    String
   customerId   Int?
   userId       Int?
   saleDate     DateTime     @default(now())

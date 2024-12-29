@@ -8,8 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { CreateInventoryDto } from './dto/inventory.dto';
-import { UpdateInventoryDto } from './dto/update-inventory.dto';
+import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
 
 @Controller('inventory')
 export class InventoryController {

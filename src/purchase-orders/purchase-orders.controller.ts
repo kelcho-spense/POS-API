@@ -8,15 +8,17 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PurchaseOrdersService } from './purchase-orders.service';
-import { CreatePurchaseOrderDto } from '../purchase-order-items/dto/purchase-order-item.dto';
-import { UpdatePurchaseOrderDto } from './dto/update-purchase-order.dto';
+import {
+  CreatePurchaseOrderItemDto,
+  UpdatePurchaseOrderItemDto,
+} from '../purchase-order-items/dto/purchase-order-item.dto';
 
 @Controller('purchase-orders')
 export class PurchaseOrdersController {
   constructor(private readonly purchaseOrdersService: PurchaseOrdersService) {}
 
   @Post()
-  create(@Body() createPurchaseOrderDto: CreatePurchaseOrderDto) {
+  create(@Body() createPurchaseOrderDto: CreatePurchaseOrderItemDto) {
     return this.purchaseOrdersService.create(createPurchaseOrderDto);
   }
 
@@ -33,7 +35,7 @@ export class PurchaseOrdersController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto,
+    @Body() updatePurchaseOrderDto: UpdatePurchaseOrderItemDto,
   ) {
     return this.purchaseOrdersService.update(+id, updatePurchaseOrderDto);
   }

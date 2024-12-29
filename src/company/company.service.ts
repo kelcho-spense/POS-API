@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { UpdateCompanyDto, CreateCompanyDto } from './dto/company.dto';
+import { v4 as uuidv4 } from 'uuid';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class CompanyService {
-  create(createCompanyDto: CreateCompanyDto) {
-    return 'This action adds a new company';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createCompanyData: CreateCompanyDto) {
+    const companyId = uuidv4();
+    const newCompany = await this.databaseService.company.create({
+      data: {
+        companyId,
+        ...createCompanyData,
+      },
+    });
+    return newCompany;
   }
 
-  findAll() {
-    return `This action returns all company`;
+  async findOne(companyId?: string, companyName?: string) {
+    if (companyId) {
+      return await this.databaseService.company.findFirst({
+        where: {
+          companyId,
+        },
+      });
+    }
+    if (companyName) {
+      return await this.databaseService.company.findFirst({
+        where: {
+          companyName,
+        },
+      });
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  async update(companyId: string, updateCompanyData: UpdateCompanyDto) {
+    return await this.databaseService.company.update({
+      where: {
+        companyId,
+      },
+      data: updateCompanyData,
+    });
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} company`;
+  async remove(companyId: string) {
+    return await this.databaseService.company.delete({
+      where: {
+        companyId,
+      },
+    });
   }
 }

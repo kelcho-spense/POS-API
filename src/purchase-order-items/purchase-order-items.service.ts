@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePurchaseOrderItemDto } from '../purchase-orders/dto/purchase-order.dto';
-import { UpdatePurchaseOrderItemDto } from './dto/update-purchase-order-item.dto';
+import {
+  CreatePurchaseOrderDto,
+  UpdatePurchaseOrderDto,
+} from '../purchase-orders/dto/purchase-order.dto';
 
 @Injectable()
 export class PurchaseOrderItemsService {
-  create(createPurchaseOrderItemDto: CreatePurchaseOrderItemDto) {
+  create(createPurchaseOrderItemDto: CreatePurchaseOrderDto) {
     return 'This action adds a new purchaseOrderItem';
   }
 
@@ -16,7 +18,7 @@ export class PurchaseOrderItemsService {
     return `This action returns a #${id} purchaseOrderItem`;
   }
 
-  update(id: number, updatePurchaseOrderItemDto: UpdatePurchaseOrderItemDto) {
+  update(id: number, updatePurchaseOrderItemDto: UpdatePurchaseOrderDto) {
     return `This action updates a #${id} purchaseOrderItem`;
   }
 

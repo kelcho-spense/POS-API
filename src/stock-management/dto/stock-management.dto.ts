@@ -8,19 +8,19 @@ import {
   IsString,
   IsNotEmpty,
 } from 'class-validator';
-import { MovementType } from '@prisma/client';
+import { ManagementType } from '@prisma/client';
 
-export class CreateStockMovementDto {
+export class CreateStockManagementDto {
   @IsNotEmpty()
   @IsInt()
   inventoryId: number;
 
   @IsNotEmpty()
-  @IsEnum(MovementType, {
+  @IsEnum(ManagementType, {
     message:
       'Invalid movement type. Must be one of: ADDITION, SUBTRACTION, ADJUSTMENT',
   })
-  movementType: MovementType;
+  ManagementType: ManagementType;
 
   @IsNotEmpty()
   @IsInt()
@@ -35,6 +35,6 @@ export class CreateStockMovementDto {
   performedById?: number;
 }
 
-export class UpdateStockMovementDto extends PartialType(
-  CreateStockMovementDto,
+export class UpdateStockManagementDto extends PartialType(
+  CreateStockManagementDto,
 ) {}
