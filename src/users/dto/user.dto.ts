@@ -5,7 +5,6 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -34,9 +33,9 @@ export class CreateUserDto {
   @IsString()
   username: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  companyId: number;
+  // @IsNotEmpty()
+  // @IsNumber()
+  // companyId: number;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

@@ -1,21 +1,13 @@
 // company.dto.ts
 
 import { PartialType } from '@nestjs/mapped-types';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsOptional()
   @IsUUID()
-  @IsString()
   companyId?: string;
 
-  @IsNotEmpty()
   @IsString()
   companyName: string;
 

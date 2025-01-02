@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
@@ -21,6 +20,7 @@ import { SaleItemsModule } from './sale-items/sale-items.module';
 import { StockManagementModule } from './stock-management/stock-management.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -53,7 +53,6 @@ import { AuditLogModule } from './audit-log/audit-log.module';
     AuditLogModule,
   ],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
@@ -63,5 +62,6 @@ import { AuditLogModule } from './audit-log/audit-log.module';
       useClass: AtGuard,
     },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

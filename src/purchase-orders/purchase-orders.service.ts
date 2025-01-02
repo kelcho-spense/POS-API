@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   CreatePurchaseOrderDto,
   UpdatePurchaseOrderDto,
-} from '../purchase-order-items/dto/purchase-order-item.dto';
+} from './dto/purchase-order.dto';
 
 @Injectable()
 export class PurchaseOrdersService {

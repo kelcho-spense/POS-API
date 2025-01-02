@@ -36,3 +36,29 @@ DELETE http://localhost:8000/api/v1/users/1
 
 ### Get Company details
 GET http://localhost:8000/api/v1/company
+
+### Create Company
+POST http://localhost:8000/api/v1/company
+Content-Type: application/json
+
+{
+  "companyName": "FreshiaTech",
+  "address": "123, Freshia Street, Freshia City", 
+  "phone": "1234567890",
+  "email": "freshia@gmail.com",
+  "taxId": "1234567890"
+}
+
+### GET Companies via ID
+GET http://localhost:8000/api/v1/company/87f34491-b0f7-437c-acf8-f5e4899d85fa
+
+### Update Company
+PATCH http://localhost:8000/api/v1/company/87f34491-b0f7-437c-acf8-f5e4899d85fa
+Content-Type: application/json
+
+{
+  "email": "freshiatech@gmail.com"
+}
+
+### Delete Company
+DELETE http://localhost:8000/api/v1/company/87f34491-b0f7-437c-acf8-f5e4899d85fa

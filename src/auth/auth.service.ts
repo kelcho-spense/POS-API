@@ -86,7 +86,6 @@ export class AuthService {
           email: createUserData.email,
           passwordHash: hashedPassword,
           role: createUserData.role,
-          companyId: createUserData.companyId,
         },
       });
 

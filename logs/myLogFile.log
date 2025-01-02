@@ -1,0 +1,15 @@
+12/31/24, 4:12 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1/health","error":"Not Found","statusCode":404}
+12/31/24, 4:19 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/2/25, 10:49 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1/company","error":"Not Found","statusCode":404}
+1/2/25, 10:55 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string","companyName should not be empty"],"error":"Bad Request","statusCode":400}
+1/2/25, 10:56 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string","companyName should not be empty"],"error":"Bad Request","statusCode":400}
+1/2/25, 10:57 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string","companyName should not be empty"],"error":"Bad Request","statusCode":400}
+1/2/25, 10:57 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:00 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:01 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:02 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:02 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:03 PM - IP: unknown - [AllExceptionsFilter] {"message":["companyName must be a string"],"error":"Bad Request","statusCode":400}
+1/2/25, 11:13 PM - IP: unknown - [AllExceptionsFilter] {"message":"Company with ID 87f34491-b0f7-437c-acf8-f5e4899d85fa not found","error":"Not Found","statusCode":404}
+1/2/25, 11:14 PM - IP: unknown - [AllExceptionsFilter] {"message":"Company with ID 87f34491-b0f7-437c-acf8-f5e4899d85fa not found","error":"Not Found","statusCode":404}
+1/2/25, 11:23 PM - IP: unknown - [AllExceptionsFilter] {"message":"Company with ID 87f34491-b0f7-437c-acf8-f5e4899d85fa not found","error":"Not Found","statusCode":404}

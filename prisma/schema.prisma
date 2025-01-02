@@ -71,7 +71,7 @@ model Company {
   createdAt    DateTime  @default(now())
 
   // Relations
-  users            User[]
+  // users            User[]
   categories       Category[]
   suppliers        Supplier[]
   products         Product[]
@@ -83,7 +83,7 @@ model Company {
 
 model User {
   userId         Int              @id @default(autoincrement())
-  companyId      String
+  // companyId      String
   role           UserRole         @default(CASHIER)
   username       String?           @unique
   passwordHash   String
@@ -94,13 +94,13 @@ model User {
   access_token_hash  String?
   refresh_token_hash String?
   // Relations
-  company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  // company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
   stockMovements   StockManagement[]  @relation("performedBy")
   purchaseOrders   PurchaseOrder[]  @relation("createdBy")
   sales            Sale[]           @relation("userSales")
   auditLogs        AuditLog[]       @relation("changedBy")
 
-  @@index([companyId], name: "idx_users_company")
+  // @@index([companyId], name: "idx_users_company")
   @@index([role], name: "idx_users_role")
 }
 
