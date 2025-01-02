@@ -1,18 +1,31 @@
 ### Health Check
 GET http://localhost:8000/api/v1/health
 
-### Users CRUD Operations ###
-
-### Create User
-POST http://localhost:8000/api/v1/users
+### AUTH Operations ###
+### signup User
+POST http://localhost:8000/api/v1/auth/local/signup
 Content-Type: application/json
 
 {
-  "username": "Freshiadoe",
+  "fullName": "Freshiadoe",
   "email": "Freshia@example.com",
-  "password_hash": "secretpass123",
-  "role": "ADMIN"
+  "password": "secretpass123",
+  "role": "ADMIN",
+  "username": "freshiadoe"
 }
+
+### signin User
+POST http://localhost:8000/api/v1/auth/local/signin
+Content-Type: application/json
+
+{
+  "email": "Freshia@example.com",
+  "password": "secretpass123"
+}
+
+
+### Users CRUD Operations ###
+
 
 ### Get All Users
 GET http://localhost:8000/api/v1/users

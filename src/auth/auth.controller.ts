@@ -14,6 +14,8 @@ import { loginDto } from './dto/auth.dto';
 import { AtGuard, RtGuard } from './common/guards';
 import { GetCurrentUser, Public } from './common/decorators';
 import { GetCurrentUserId } from './common/decorators/get-current-user-id.decorator';
+import { ApiBody } from '@nestjs/swagger';
+import { log } from 'console';
 
 @Controller('auth')
 export class AuthController {
@@ -23,9 +25,9 @@ export class AuthController {
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
   signupLocal(
-    @Body(ValidationPipe) CreateUserData: CreateUserDto,
+    @Body(ValidationPipe) createUserDto: CreateUserDto,
   ): Promise<Tokens> {
-    return this.authService.signupLocal(CreateUserData);
+    return this.authService.signupLocal(createUserDto);
   }
 
   @Public()
