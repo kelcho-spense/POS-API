@@ -1,6 +1,6 @@
 // sale-item.dto.ts
 
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsDecimal, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateSaleItemDto {

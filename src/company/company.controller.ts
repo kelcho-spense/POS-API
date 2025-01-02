@@ -11,7 +11,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { CreateCompanyDto, UpdateCompanyDto } from './dto/company.dto';
+import { CreateCompanyDto } from './dto/company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Public } from 'src/auth/common/decorators';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 

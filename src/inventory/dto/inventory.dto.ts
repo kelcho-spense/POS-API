@@ -1,6 +1,6 @@
 // inventory.dto.ts
 
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateInventoryDto {

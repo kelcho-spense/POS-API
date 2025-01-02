@@ -1,6 +1,5 @@
 // company.dto.ts
 
-import { PartialType } from '@nestjs/mapped-types';
 import { IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateCompanyDto {
@@ -27,5 +26,3 @@ export class CreateCompanyDto {
   @IsString()
   taxId?: string;
 }
-
-export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {}

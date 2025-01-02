@@ -1,6 +1,6 @@
 // purchase-order-item.dto.ts
 
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsDecimal, IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreatePurchaseOrderItemDto {

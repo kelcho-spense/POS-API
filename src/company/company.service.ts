@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateCompanyDto, CreateCompanyDto } from './dto/company.dto';
+import { CreateCompanyDto } from './dto/company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { DatabaseService } from 'src/database/database.service';
 

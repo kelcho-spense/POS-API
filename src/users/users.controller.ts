@@ -18,7 +18,7 @@ import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Get() // GET /users or GET /users?limit=10&role=admin
   @ApiQuery({ name: 'role', enum: UserRole, required: false })
