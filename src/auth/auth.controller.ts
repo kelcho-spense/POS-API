@@ -14,8 +14,6 @@ import { loginDto } from './dto/auth.dto';
 import { AtGuard, RtGuard } from './common/guards';
 import { GetCurrentUser, Public } from './common/decorators';
 import { GetCurrentUserId } from './common/decorators/get-current-user-id.decorator';
-import { ApiBody } from '@nestjs/swagger';
-import { log } from 'console';
 
 @Controller('auth')
 export class AuthController {
@@ -44,7 +42,6 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
-  @Public()
   @UseGuards(RtGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)

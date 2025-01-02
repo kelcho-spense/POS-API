@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto, UpdateSaleDto } from './dto/sale.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('sales')
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}

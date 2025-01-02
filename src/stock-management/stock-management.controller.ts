@@ -12,7 +12,9 @@ import {
   CreateStockManagementDto,
   UpdateStockManagementDto,
 } from './dto/stock-management.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('stock-management')
 export class StockManagementController {
   constructor(

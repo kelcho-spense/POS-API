@@ -12,7 +12,9 @@ import {
   CreatePurchaseOrderDto,
   UpdatePurchaseOrderDto,
 } from '../purchase-orders/dto/purchase-order.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('purchase-order-items')
 export class PurchaseOrderItemsController {
   constructor(

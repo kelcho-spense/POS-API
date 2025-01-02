@@ -13,10 +13,10 @@ import {
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { Public } from 'src/auth/common/decorators';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Public()
+@ApiBearerAuth()
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
