@@ -31,3 +31,13 @@ E:\PersonalProjects\POS-API\src\auth\auth.service.ts:82:55
 → 82 const newUser = await this.databaseService.user.create(
 Null constraint violation on the fields: (`companyId`)
 1/3/25, 1:08 AM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/3/25, 2:10 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}
+1/3/25, 2:10 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /favicon.ico","error":"Not Found","statusCode":404}
+1/3/25, 2:11 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1","error":"Not Found","statusCode":404}
+1/3/25, 2:12 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1","error":"Not Found","statusCode":404}
+1/3/25, 2:12 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1","error":"Not Found","statusCode":404}
+1/3/25, 2:12 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1","error":"Not Found","statusCode":404}
+1/5/25, 5:17 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /api/v1/category","error":"Not Found","statusCode":404}
+1/5/25, 5:18 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/5/25, 5:27 PM - IP: unknown - [AllExceptionsFilter]  Invalid `this.databaseService.category.findFirst()` invocation in E:\PersonalProjects\POS-API\src\categories\categories.service.ts:21:48    18 }   19    20 async findOne(categoryId: number): Promise<Category> { → 21   return await this.databaseService.category.findFirst({          where: {            categoryId: "1"                        ~~~          }        })  Argument `categoryId`: Invalid value provided. Expected IntFilter or Int, provided String.
+1/5/25, 5:32 PM - IP: unknown - [AllExceptionsFilter]  Invalid `this.databaseService.category.findFirst()` invocation in E:\PersonalProjects\POS-API\src\categories\categories.service.ts:21:48    18 }   19    20 async findOne(categoryId: number): Promise<Category> { → 21   return await this.databaseService.category.findFirst({          where: {            categoryId: "1"                        ~~~          }        })  Argument `categoryId`: Invalid value provided. Expected IntFilter or Int, provided String.

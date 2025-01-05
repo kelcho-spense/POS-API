@@ -62,154 +62,128 @@ enum Operation {
 // ==========================
 
 model Company {
-  companyId    String       @id @default(uuid())
-  companyName  String
-  address      String?
-  phone        String?
-  email        String?
-  taxId        String?
-  createdAt    DateTime  @default(now())
-
-  // Relations
-  // users            User[]
-  categories       Category[]
-  suppliers        Supplier[]
-  products         Product[]
-  customers        Customer[]
-  inventory        Inventory[]
-  purchaseOrders   PurchaseOrder[]
-  sales            Sale[]
+  companyId   String   @id @default(uuid())
+  companyName String
+  address     String?
+  phone       String?
+  email       String?
+  taxId       String?
+  createdAt   DateTime @default(now())
 }
 
 model User {
-  userId         Int              @id @default(autoincrement())
-  // companyId      String
-  role           UserRole         @default(CASHIER)
-  username       String?           @unique
-  passwordHash   String
-  fullName       String
-  email          String          @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  userId             Int               @id @default(autoincrement())
+  role               UserRole          @default(CASHIER)
+  username           String?           @unique
+  passwordHash       String
+  fullName           String
+  email              String            @unique
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
   access_token_hash  String?
   refresh_token_hash String?
   // Relations
-  // company          Company          @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  stockMovements   StockManagement[]  @relation("performedBy")
-  purchaseOrders   PurchaseOrder[]  @relation("createdBy")
-  sales            Sale[]           @relation("userSales")
-  auditLogs        AuditLog[]       @relation("changedBy")
+  stockMovements     StockManagement[] @relation("performedBy")
+  purchaseOrders     PurchaseOrder[]   @relation("createdBy")
+  sales              Sale[]            @relation("userSales")
+  auditLogs          AuditLog[]        @relation("changedBy")
 
-  // @@index([companyId], name: "idx_users_company")
   @@index([role], name: "idx_users_role")
 }
 
 model Category {
-  categoryId   Int       @id @default(autoincrement())
-  companyId    String
+  categoryId   Int      @id @default(autoincrement())
   categoryName String
   description  String?
-  createdAt    DateTime  @default(now())
+  createdAt    DateTime @default(now())
 
   // Relations
-  company      Company   @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  products     Product[]
+  products Product[]
 }
 
 model Supplier {
-  supplierId      Int               @id @default(autoincrement())
-  companyId       String
-  supplierName    String
-  contactPerson   String?
-  email           String?           @unique
-  phone           String?
-  address         String?
-  createdAt       DateTime          @default(now())
+  supplierId    Int      @id @default(autoincrement())
+  supplierName  String
+  contactPerson String?
+  email         String?  @unique
+  phone         String?
+  address       String?
+  createdAt     DateTime @default(now())
 
   // Relations
-  company         Company           @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  products        Product[]
-  purchaseOrders  PurchaseOrder[]
+  products       Product[]
+  purchaseOrders PurchaseOrder[]
 }
 
 model Product {
-  productId    Int          @id @default(autoincrement())
-  companyId    String
-  categoryId   Int?
-  supplierId   Int?
-  productName  String
-  description  String?
-  sku          String?      @unique
-  unitPrice    Decimal      @db.Decimal(10, 2)
-  taxRate      Decimal      @default(0.00) @db.Decimal(4, 2)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  productId   Int      @id @default(autoincrement())
+  categoryId  Int?
+  supplierId  Int?
+  productName String
+  description String?
+  sku         String?  @unique
+  unitPrice   Decimal  @db.Decimal(10, 2)
+  taxRate     Decimal  @default(0.00) @db.Decimal(4, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relations
-  company        Company        @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  category       Category?      @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
-  supplier       Supplier?      @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
-  inventory      Inventory?
-  saleItems      SaleItem[]
+  category           Category?           @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
+  supplier           Supplier?           @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
+  inventory          Inventory?
+  saleItems          SaleItem[]
   purchaseOrderItems PurchaseOrderItem[]
-  
-  @@index([companyId], name: "idx_products_company")
+
   @@index([categoryId], name: "idx_products_category")
   @@index([supplierId], name: "idx_products_supplier")
 }
 
 model Customer {
-  customerId    Int       @id @default(autoincrement())
-  companyId     String
-  firstName     String
-  lastName      String
-  email         String?   @unique
-  phone         String?
-  address       String?
-  registeredAt  DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  customerId   Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String?  @unique
+  phone        String?
+  address      String?
+  registeredAt DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Relations
-  company       Company   @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  sales         Sale[]
+  sales Sale[]
 }
 
 model Inventory {
-  inventoryId   Int          @id @default(autoincrement())
-  productId     Int          @unique
-  companyId     String
-  quantity      Int          @default(0)
-  reorderLevel  Int          @default(0)
-  lastUpdated   DateTime     @default(now())
+  inventoryId  Int      @id @default(autoincrement())
+  productId    Int      @unique
+  quantity     Int      @default(0)
+  reorderLevel Int      @default(0)
+  lastUpdated  DateTime @default(now())
 
   // Relations
-  product        Product        @relation(fields: [productId], references: [productId], onDelete: Cascade)
-  company        Company        @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
+  product        Product           @relation(fields: [productId], references: [productId], onDelete: Cascade)
   stockMovements StockManagement[]
 
   @@index([productId], name: "idx_inventory_product")
-  @@index([companyId], name: "idx_inventory_company")
 }
 
 model StockManagement {
-  managementId      Int          @id @default(autoincrement())
-  inventoryId     Int
-  managementType    ManagementType
-  quantityChange  Int
-  reference       String?
-  managementDate    DateTime     @default(now())
-  performedById   Int?
+  managementId   Int            @id @default(autoincrement())
+  inventoryId    Int
+  managementType ManagementType
+  quantityChange Int
+  reference      String?
+  managementDate DateTime       @default(now())
+  performedById  Int?
 
   // Relations
-  inventory        Inventory  @relation(fields: [inventoryId], references: [inventoryId], onDelete: Cascade)
-  performedBy      User?      @relation("performedBy", fields: [performedById], references: [userId])
-  
+  inventory   Inventory @relation(fields: [inventoryId], references: [inventoryId], onDelete: Cascade)
+  performedBy User?     @relation("performedBy", fields: [performedById], references: [userId])
+
   @@index([inventoryId], name: "idx_stock_managements_inventory")
 }
 
 model PurchaseOrder {
   purchaseOrderId      Int                 @id @default(autoincrement())
-  companyId            String
   supplierId           Int?
   orderDate            DateTime            @default(now())
   expectedDeliveryDate DateTime?
@@ -219,97 +193,92 @@ model PurchaseOrder {
   updatedAt            DateTime            @updatedAt
 
   // Relations
-  company              Company             @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  supplier             Supplier?           @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
-  createdBy            User?               @relation("createdBy", fields: [createdById], references: [userId])
-  purchaseOrderItems   PurchaseOrderItem[]
-  
-  @@index([companyId], name: "idx_purchase_orders_company")
+  supplier           Supplier?           @relation(fields: [supplierId], references: [supplierId], onDelete: SetNull)
+  createdBy          User?               @relation("createdBy", fields: [createdById], references: [userId])
+  purchaseOrderItems PurchaseOrderItem[]
+
   @@index([supplierId], name: "idx_purchase_orders_supplier")
 }
 
 model PurchaseOrderItem {
-  purchaseOrderItemId Int          @id @default(autoincrement())
+  purchaseOrderItemId Int     @id @default(autoincrement())
   purchaseOrderId     Int
   productId           Int?
   quantity            Int
-  unitPrice           Decimal      @db.Decimal(10, 2)
-  subtotal            Decimal      @db.Decimal(10, 2)
+  unitPrice           Decimal @db.Decimal(10, 2)
+  subtotal            Decimal @db.Decimal(10, 2)
 
   // Relations
-  purchaseOrder       PurchaseOrder @relation(fields: [purchaseOrderId], references: [purchaseOrderId], onDelete: Cascade)
-  product             Product?      @relation(fields: [productId], references: [productId], onDelete: SetNull)
-  
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [purchaseOrderId], onDelete: Cascade)
+  product       Product?      @relation(fields: [productId], references: [productId], onDelete: SetNull)
+
   @@index([purchaseOrderId], name: "idx_purchase_order_items_purchase_order")
   @@index([productId], name: "idx_purchase_order_items_product")
 }
 
 model Sale {
-  saleId       Int          @id @default(autoincrement())
-  companyId    String
-  customerId   Int?
-  userId       Int?
-  saleDate     DateTime     @default(now())
-  subtotal     Decimal      @db.Decimal(10, 2)
-  taxAmount    Decimal      @default(0.00) @db.Decimal(10, 2)
-  totalAmount  Decimal      @db.Decimal(10, 2)
-  status       SaleStatus   @default(COMPLETED)
+  saleId      Int        @id @default(autoincrement())
+  customerId  Int?
+  userId      Int?
+  saleDate    DateTime   @default(now())
+  subtotal    Decimal    @db.Decimal(10, 2)
+  taxAmount   Decimal    @default(0.00) @db.Decimal(10, 2)
+  totalAmount Decimal    @db.Decimal(10, 2)
+  status      SaleStatus @default(COMPLETED)
 
   // Relations
-  company      Company      @relation(fields: [companyId], references: [companyId], onDelete: Cascade)
-  customer     Customer?    @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
-  user         User?        @relation("userSales", fields: [userId], references: [userId], onDelete: SetNull)
-  saleItems    SaleItem[]
-  payments     Payment[]
+  customer  Customer?  @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
+  user      User?      @relation("userSales", fields: [userId], references: [userId], onDelete: SetNull)
+  saleItems SaleItem[]
+  payments  Payment[]
 
-  @@index([companyId], name: "idx_sales_company")
   @@index([customerId], name: "idx_sales_customer")
   @@index([userId], name: "idx_sales_user")
 }
 
 model SaleItem {
-  saleItemId    Int       @id @default(autoincrement())
-  saleId        Int
-  productId     Int?
-  quantity      Int
-  unitPrice     Decimal   @db.Decimal(10, 2)
-  taxAmount     Decimal   @default(0.00) @db.Decimal(10, 2)
-  subtotal      Decimal   @db.Decimal(10, 2)
+  saleItemId Int     @id @default(autoincrement())
+  saleId     Int
+  productId  Int?
+  quantity   Int
+  unitPrice  Decimal @db.Decimal(10, 2)
+  taxAmount  Decimal @default(0.00) @db.Decimal(10, 2)
+  subtotal   Decimal @db.Decimal(10, 2)
 
   // Relations
-  sale          Sale      @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
-  product       Product?  @relation(fields: [productId], references: [productId], onDelete: SetNull)
-  
+  sale    Sale     @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [productId], onDelete: SetNull)
+
   @@index([saleId], name: "idx_sale_items_sale")
   @@index([productId], name: "idx_sale_items_product")
 }
 
 model Payment {
-  paymentId          Int            @id @default(autoincrement())
-  saleId             Int
-  paymentDate        DateTime       @default(now())
-  amount             Decimal        @db.Decimal(10, 2)
-  paymentMethod      PaymentMethod
-  paymentReference   String?
+  paymentId        Int           @id @default(autoincrement())
+  saleId           Int
+  paymentDate      DateTime      @default(now())
+  amount           Decimal       @db.Decimal(10, 2)
+  paymentMethod    PaymentMethod
+  paymentReference String?
 
   // Relations
-  sale               Sale           @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
-  
+  sale Sale @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
+
   @@index([saleId], name: "idx_payments_sale")
 }
 
 model AuditLog {
-  auditId     Int        @id @default(autoincrement())
+  auditId     Int       @id @default(autoincrement())
   tableName   String
   recordId    Int
   operation   Operation
-  changedAt   DateTime   @default(now())
+  changedAt   DateTime  @default(now())
   changedById Int?
   oldData     Json?
   newData     Json?
 
   // Relations
-  changedBy   User?      @relation("changedBy", fields: [changedById], references: [userId])
+  changedBy User? @relation("changedBy", fields: [changedById], references: [userId])
 
   @@index([tableName, recordId], name: "idx_audit_logs_table_record")
 }

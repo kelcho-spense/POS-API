@@ -75,3 +75,44 @@ Content-Type: application/json
 
 ### Delete Company
 DELETE http://localhost:8000/api/v1/company/87f34491-b0f7-437c-acf8-f5e4899d85fa
+
+### categories CRUD Operations ###
+### Create Category
+POST http://localhost:8000/api/v1/categories
+Content-Type: application/json
+
+{
+  "categoryName": "Electronics",
+  "description": "All electronics items"
+}
+
+### Get All Categories
+GET http://localhost:8000/api/v1/categories
+
+### Get Category by ID
+GET http://localhost:8000/api/v1/categories/1
+
+### Update Category
+PATCH http://localhost:8000/api/v1/categories/1
+Content-Type: application/json
+
+{
+  "categoryName": "Electronics",
+  "description": "All electronics items"
+}
+
+### Delete Category
+DELETE http://localhost:8000/api/v1/categories/1
+
+### Product CRUD Operations ###
+### Create Product
+POST http://localhost:8000/api/v1/product
+Content-Type: application/json
+
+{
+  "productName": "Laptop",
+  "description": "Dell Inspiron 15 3000",
+  "price": 50000,
+  "quantity": 10,
+  "categoryId": 1
+}
