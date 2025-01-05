@@ -104,15 +104,34 @@ Content-Type: application/json
 ### Delete Category
 DELETE http://localhost:8000/api/v1/categories/1
 
-### Product CRUD Operations ###
-### Create Product
-POST http://localhost:8000/api/v1/product
+### Customers CRUD Operations ###
+### Create Customers
+POST http://localhost:8000/api/v1/customers
 Content-Type: application/json
 
 {
-  "productName": "Laptop",
-  "description": "Dell Inspiron 15 3000",
-  "price": 50000,
-  "quantity": 10,
-  "categoryId": 1
+  "firstName": "Freshia",
+  "lastName": "Doe",
+  "email": "freshia@gmail.com",
+  "phone": "1234567890",
+  "address": "123, Freshia Street, Freshia City"
 }
+
+### Get All Customers
+GET http://localhost:8000/api/v1/customers
+
+### Get Customer by ID
+GET http://localhost:8000/api/v1/customers/1
+
+### Update Customer
+PATCH http://localhost:8000/api/v1/customers/1
+Content-Type: application/json
+
+{
+  "lastName": "Njoki",
+  "email": "freshia@outlook.com"
+}
+
+### Delete Customer
+DELETE http://localhost:8000/api/v1/customers/1
+
