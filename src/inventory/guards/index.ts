@@ -1,2 +1,2 @@
 export * from './ExistsViaIdGuard';
-export * from './ReorderLevelGuard';
+export * from '../../inventory/guards/ReorderLevelGuard';

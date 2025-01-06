@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { InventoryService } from '../inventory.service';
+import { InventoryService } from 'src/inventory/inventory.service';
 
 @Injectable()
 export class ReorderLevelGuard implements CanActivate {

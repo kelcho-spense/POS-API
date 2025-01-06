@@ -163,4 +163,36 @@ Content-Type: application/json
 ### Delete Inventory
 DELETE http://localhost:8000/api/v1/inventory/1
 
+### Product CRUD Operations ###
+### Create Product
+POST http://localhost:8000/api/v1/products
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "supplierId": 1,
+  "productName": "Laptop",
+  "description": "Dell Laptop",
+  "sku": "123456",
+  "unitPrice": 1000.00,
+  "taxRate": 0.00
+}
+
+### Get All Products
+GET http://localhost:8000/api/v1/products
+
+### Get Product by ID
+GET http://localhost:8000/api/v1/products/1
+
+### Update Product
+PATCH http://localhost:8000/api/v1/products/1
+Content-Type: application/json
+
+{
+  "unitPrice": 1200.00
+}
+
+### Delete Product
+DELETE http://localhost:8000/api/v1/products/1
+
 
