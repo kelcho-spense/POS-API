@@ -8,10 +8,6 @@ export class CreateInventoryDto {
   @IsInt()
   productId: number;
 
-  @IsNotEmpty()
-  @IsInt()
-  companyId: number;
-
   @IsOptional()
   @IsInt()
   quantity?: number;

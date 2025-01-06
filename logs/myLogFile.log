@@ -48,3 +48,22 @@ Null constraint violation on the fields: (`companyId`)
 1/5/25, 6:31 PM - IP: unknown - [AllExceptionsFilter]  Invalid `this.databaseService.customer.findUnique()` invocation in E:\PersonalProjects\POS-API\src\customers\customers.service.ts:21:42    18 }   19    20 findOne(customerId: number): Promise<Customer> { → 21   return this.databaseService.customer.findUnique({          where: {            customerId: "1"                        ~~~          }        })  Argument `customerId`: Invalid value provided. Expected Int, provided String.
 1/5/25, 6:34 PM - IP: unknown - [AllExceptionsFilter] {"message":"Expected double-quoted property name in JSON at position 62","error":"Bad Request","statusCode":400}
 1/5/25, 6:34 PM - IP: unknown - [AllExceptionsFilter] {"message":"Company with ID 1 not found","error":"Not Found","statusCode":404}
+1/5/25, 7:38 PM - IP: unknown - [AllExceptionsFilter] {"message":"Expected ',' or '}' after property value in JSON at position 59","error":"Bad Request","statusCode":400}
+1/5/25, 7:38 PM - IP: unknown - [AllExceptionsFilter] 
+Invalid `this.databaseService.inventory.create()` invocation in
+E:\PersonalProjects\POS-API\src\inventory\inventory.service.ts:34:49
+
+  31 
+  32 // CRUD Methods
+  33 async create(createInventoryData: CreateInventoryDto): Promise<Inventory> {
+→ 34   return await this.databaseService.inventory.create(
+Foreign key constraint violated: `Inventory_productId_fkey (index)`
+1/6/25, 4:58 PM - IP: unknown - [AllExceptionsFilter] 
+Invalid `this.databaseService.inventory.create()` invocation in
+E:\PersonalProjects\POS-API\src\inventory\inventory.service.ts:34:49
+
+  31 
+  32 // CRUD Methods
+  33 async create(createInventoryData: CreateInventoryDto): Promise<Inventory> {
+→ 34   return await this.databaseService.inventory.create(
+Foreign key constraint violated: `Inventory_productId_fkey (index)`

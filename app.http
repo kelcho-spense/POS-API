@@ -135,3 +135,32 @@ Content-Type: application/json
 ### Delete Customer
 DELETE http://localhost:8000/api/v1/customers/1
 
+### Inventory CRUD Operations ###
+### Create Inventory
+POST http://localhost:8000/api/v1/inventory
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 3,
+  "reorderLevel": 1
+}
+
+### Get All Inventory
+GET http://localhost:8000/api/v1/inventory
+
+### Get Inventory by ID
+GET http://localhost:8000/api/v1/inventory/1
+
+### Update Inventory
+PATCH http://localhost:8000/api/v1/inventory/1
+Content-Type: application/json
+
+{
+  "quantity": 1,
+}
+
+### Delete Inventory
+DELETE http://localhost:8000/api/v1/inventory/1
+
+
