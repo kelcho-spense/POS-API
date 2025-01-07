@@ -1,25 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSaleDto, UpdateSaleDto } from './dto/sale.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { Sale } from '@prisma/client';
 
 @Injectable()
 export class SalesService {
-  create(createSaleDto: CreateSaleDto) {
-    return 'This action adds a new sale';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createSaleData: CreateSaleDto): Promise<Sale> {
+    return await this.databaseService.sale.create({
+      data: createSaleData,
+    });
   }
 
-  findAll() {
-    return `This action returns all sales`;
+  async findAll(): Promise<Sale[]> {
+    return await this.databaseService.sale.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sale`;
+  async findOne(saleId: number): Promise<Sale> {
+    return await this.databaseService.sale.findUnique({
+      where: { saleId },
+    });
   }
 
-  update(id: number, updateSaleDto: UpdateSaleDto) {
-    return `This action updates a #${id} sale`;
+  async update(saleId: number, updateSaleData: UpdateSaleDto): Promise<Sale> {
+    return await this.databaseService.sale.update({
+      where: { saleId },
+      data: updateSaleData,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sale`;
+  async remove(saleId: number): Promise<Sale> {
+    return await this.databaseService.sale.delete({
+      where: { saleId },
+    });
   }
 }
