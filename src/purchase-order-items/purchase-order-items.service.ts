@@ -1,28 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import {
-  CreatePurchaseOrderDto,
-  UpdatePurchaseOrderDto,
-} from '../purchase-orders/dto/purchase-order.dto';
+  CreatePurchaseOrderItemDto,
+  UpdatePurchaseOrderItemDto,
+} from './dto/purchase-order-item.dto';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class PurchaseOrderItemsService {
-  create(createPurchaseOrderItemDto: CreatePurchaseOrderDto) {
-    return 'This action adds a new purchaseOrderItem';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createPurchaseOrderItemData: CreatePurchaseOrderItemDto) {
+    return await this.databaseService.purchaseOrderItem.create({
+      data: createPurchaseOrderItemData,
+    });
   }
 
-  findAll() {
-    return `This action returns all purchaseOrderItems`;
+  async findAll() {
+    return await this.databaseService.purchaseOrderItem.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} purchaseOrderItem`;
+  async findOne(purchaseOrderItemId: number) {
+    return await this.databaseService.purchaseOrderItem.findUnique({
+      where: { purchaseOrderItemId },
+    });
   }
 
-  update(id: number, updatePurchaseOrderItemDto: UpdatePurchaseOrderDto) {
-    return `This action updates a #${id} purchaseOrderItem`;
+  async update(
+    purchaseOrderItemId: number,
+    updatePurchaseOrderItemData: UpdatePurchaseOrderItemDto,
+  ) {
+    return await this.databaseService.purchaseOrderItem.update({
+      where: { purchaseOrderItemId },
+      data: updatePurchaseOrderItemData,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} purchaseOrderItem`;
+  async remove(purchaseOrderItemId: number) {
+    return await this.databaseService.purchaseOrderItem.delete({
+      where: { purchaseOrderItemId },
+    });
   }
 }

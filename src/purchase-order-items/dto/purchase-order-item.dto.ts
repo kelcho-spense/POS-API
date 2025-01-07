@@ -6,6 +6,10 @@ import { IsDecimal, IsInt, IsNotEmpty } from 'class-validator';
 export class CreatePurchaseOrderItemDto {
   @IsNotEmpty()
   @IsInt()
+  purchaseOrderItemId: number;
+
+  @IsNotEmpty()
+  @IsInt()
   purchaseOrderId: number;
 
   @IsNotEmpty()
