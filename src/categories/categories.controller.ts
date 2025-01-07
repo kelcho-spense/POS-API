@@ -15,6 +15,7 @@ import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 import { Public } from 'src/auth/common/decorators';
+
 @Public()
 @ApiBearerAuth()
 @Controller('categories')

@@ -1,25 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePaymentDto, UpdatePaymentDto } from './dto/payment.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { Payment } from '@prisma/client';
 
 @Injectable()
 export class PaymentsService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createPaymentData: CreatePaymentDto): Promise<Payment> {
+    return await this.databaseService.payment.create({
+      data: createPaymentData,
+    });
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll(): Promise<Payment[]> {
+    return await this.databaseService.payment.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(paymentId: number): Promise<Payment> {
+    return await this.databaseService.payment.findUnique({
+      where: { paymentId },
+    });
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(
+    paymentId: number,
+    updatePaymentData: UpdatePaymentDto,
+  ): Promise<Payment> {
+    return await this.databaseService.payment.update({
+      where: { paymentId },
+      data: updatePaymentData,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(paymentId: number): Promise<Payment> {
+    return await this.databaseService.payment.delete({
+      where: { paymentId },
+    });
   }
 }
