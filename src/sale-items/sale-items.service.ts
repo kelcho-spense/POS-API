@@ -1,25 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class SaleItemsService {
-  create(createSaleItemDto: CreateSaleItemDto) {
-    return 'This action adds a new saleItem';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createSaleItemData: CreateSaleItemDto) {
+    return await this.databaseService.saleItem.create({
+      data: createSaleItemData,
+    });
   }
 
-  findAll() {
-    return `This action returns all saleItems`;
+  async findAll() {
+    return await this.databaseService.saleItem.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} saleItem`;
+  async findOne(saleItemId: number) {
+    return await this.databaseService.saleItem.findUnique({
+      where: { saleItemId },
+    });
+  }
+  async update(saleItemId: number, updateSaleItemData: UpdateSaleItemDto) {
+    return await this.databaseService.saleItem.update({
+      where: { saleItemId },
+      data: updateSaleItemData,
+    });
   }
 
-  update(id: number, updateSaleItemDto: UpdateSaleItemDto) {
-    return `This action updates a #${id} saleItem`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} saleItem`;
+  async remove(saleItemId: number) {
+    return await this.databaseService.saleItem.delete({
+      where: { saleItemId },
+    });
   }
 }
