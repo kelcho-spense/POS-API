@@ -3,26 +3,43 @@ import {
   CreatePurchaseOrderDto,
   UpdatePurchaseOrderDto,
 } from './dto/purchase-order.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { PurchaseOrder } from '@prisma/client';
 
 @Injectable()
 export class PurchaseOrdersService {
-  create(createPurchaseOrderDto: CreatePurchaseOrderDto) {
-    return 'This action adds a new purchaseOrder';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(
+    createPurchaseOrderData: CreatePurchaseOrderDto,
+  ): Promise<PurchaseOrder> {
+    return await this.databaseService.purchaseOrder.create({
+      data: createPurchaseOrderData,
+    });
   }
 
-  findAll() {
-    return `This action returns all purchaseOrders`;
+  async findAll(): Promise<PurchaseOrder[]> {
+    return await this.databaseService.purchaseOrder.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} purchaseOrder`;
+  async findOne(purchaseOrderId: number): Promise<PurchaseOrder> {
+    return await this.databaseService.purchaseOrder.findUnique({
+      where: { purchaseOrderId },
+    });
   }
 
-  update(id: number, updatePurchaseOrderDto: UpdatePurchaseOrderDto) {
-    return `This action updates a #${id} purchaseOrder`;
+  async update(
+    purchaseOrderId: number,
+    updatePurchaseOrderData: UpdatePurchaseOrderDto,
+  ): Promise<PurchaseOrder> {
+    return await this.databaseService.purchaseOrder.update({
+      where: { purchaseOrderId },
+      data: updatePurchaseOrderData,
+    });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} purchaseOrder`;
+  async remove(purchaseOrderId: number): Promise<PurchaseOrder> {
+    return await this.databaseService.purchaseOrder.delete({
+      where: { purchaseOrderId },
+    });
   }
 }

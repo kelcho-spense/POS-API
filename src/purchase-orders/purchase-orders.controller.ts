@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PurchaseOrdersService } from './purchase-orders.service';
 import {
@@ -13,14 +16,17 @@ import {
   UpdatePurchaseOrderDto,
 } from './dto/purchase-order.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from 'src/auth/common/decorators';
+import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 
+@Public()
 @ApiBearerAuth()
 @Controller('purchase-orders')
 export class PurchaseOrdersController {
   constructor(private readonly purchaseOrdersService: PurchaseOrdersService) {}
 
   @Post()
-  create(@Body() createPurchaseOrderDto: CreatePurchaseOrderDto) {
+  create(@Body(ValidationPipe) createPurchaseOrderDto: CreatePurchaseOrderDto) {
     return this.purchaseOrdersService.create(createPurchaseOrderDto);
   }
 
@@ -28,22 +34,22 @@ export class PurchaseOrdersController {
   findAll() {
     return this.purchaseOrdersService.findAll();
   }
-
+  @UseGuards(ExistsViaIdGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.purchaseOrdersService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.purchaseOrdersService.findOne(id);
   }
-
+  @UseGuards(ExistsViaIdGuard)
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updatePurchaseOrderDto: UpdatePurchaseOrderDto,
   ) {
-    return this.purchaseOrdersService.update(+id, updatePurchaseOrderDto);
+    return this.purchaseOrdersService.update(id, updatePurchaseOrderDto);
   }
-
+  @UseGuards(ExistsViaIdGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.purchaseOrdersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.purchaseOrdersService.remove(id);
   }
 }
