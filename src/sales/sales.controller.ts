@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto, UpdateSaleDto } from './dto/sale.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/auth/common/decorators';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 import { Sale } from '@prisma/client';
@@ -35,12 +35,14 @@ export class SalesController {
 
   @UseGuards(ExistsViaIdGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Sale> {
     return this.salesService.findOne(id);
   }
 
   @UseGuards(ExistsViaIdGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateSaleDto: UpdateSaleDto,
@@ -50,6 +52,7 @@ export class SalesController {
 
   @UseGuards(ExistsViaIdGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Sale> {
     return this.salesService.remove(id);
   }

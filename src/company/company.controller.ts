@@ -14,7 +14,7 @@ import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller('company')
@@ -27,12 +27,14 @@ export class CompanyController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.companyService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -42,6 +44,7 @@ export class CompanyController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.companyService.remove(id);

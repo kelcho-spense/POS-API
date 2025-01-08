@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { CreateInventoryDto, UpdateInventoryDto } from './dto/inventory.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/auth/common/decorators';
 import { ExistsViaIdGuard, ReorderLevelGuard } from './guards';
 
@@ -34,12 +34,14 @@ export class InventoryController {
 
   @UseGuards(ExistsViaIdGuard, ReorderLevelGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.inventoryService.findOne(id);
   }
 
   @UseGuards(ExistsViaIdGuard, ReorderLevelGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateInventoryData: UpdateInventoryDto,
@@ -49,6 +51,7 @@ export class InventoryController {
 
   @UseGuards(ExistsViaIdGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.inventoryService.remove(id);
   }

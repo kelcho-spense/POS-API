@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 import { Public } from 'src/auth/common/decorators';
 
@@ -33,12 +33,14 @@ export class CategoriesController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -48,6 +50,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(ExistsViaIdGuard)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.remove(id);

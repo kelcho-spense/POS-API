@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { SaleItemsService } from './sale-items.service';
 import { CreateSaleItemDto, UpdateSaleItemDto } from './dto/sale-item.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 import { Public } from 'src/auth/common/decorators';
 
@@ -34,12 +34,14 @@ export class SaleItemsController {
 
   @UseGuards(ExistsViaIdGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.saleItemsService.findOne(id);
   }
 
   @UseGuards(ExistsViaIdGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateSaleItemData: UpdateSaleItemDto,
@@ -49,6 +51,7 @@ export class SaleItemsController {
 
   @UseGuards(ExistsViaIdGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.saleItemsService.remove(id);
   }
