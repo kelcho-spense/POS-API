@@ -14,7 +14,7 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto, UpdatePaymentDto } from './dto/payment.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Public } from 'src/auth/common/decorators';
-import { ExistsViaIdGuard } from 'src/inventory/guards';
+import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 
 @Public()
 @ApiBearerAuth()

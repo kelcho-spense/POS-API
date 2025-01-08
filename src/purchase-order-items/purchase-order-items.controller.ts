@@ -17,7 +17,7 @@ import {
 } from './dto/purchase-order-item.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Public } from 'src/auth/common/decorators';
-import { ExistsViaIdGuard } from 'src/inventory/guards';
+import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 
 @Public()
 @ApiBearerAuth()
