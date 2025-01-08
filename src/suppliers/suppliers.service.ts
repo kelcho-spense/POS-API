@@ -1,25 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSupplierDto, UpdateSupplierDto } from './dto/supplier.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { Supplier } from '@prisma/client';
 
 @Injectable()
 export class SuppliersService {
-  create(createSupplierDto: CreateSupplierDto) {
-    return 'This action adds a new supplier';
+  constructor(private readonly databaseService: DatabaseService) {}
+  async create(createSupplierDto: CreateSupplierDto): Promise<Supplier> {
+    return await this.databaseService.supplier.create({
+      data: createSupplierDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all suppliers`;
+  async findAll(): Promise<Supplier[]> {
+    return await this.databaseService.supplier.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} supplier`;
+  async findOne(supplierId: number): Promise<Supplier> {
+    return await this.databaseService.supplier.findUnique({
+      where: { supplierId },
+    });
   }
 
-  update(id: number, updateSupplierDto: UpdateSupplierDto) {
-    return `This action updates a #${id} supplier`;
+  async update(
+    supplierId: number,
+    updateSupplierDto: UpdateSupplierDto,
+  ): Promise<Supplier> {
+    return await this.databaseService.supplier.update({
+      where: { supplierId },
+      data: updateSupplierDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} supplier`;
+  async remove(supplierId: number): Promise<Supplier> {
+    return await this.databaseService.supplier.delete({
+      where: { supplierId },
+    });
   }
 }
