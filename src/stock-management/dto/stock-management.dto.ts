@@ -20,7 +20,7 @@ export class CreateStockManagementDto {
     message:
       'Invalid movement type. Must be one of: ADDITION, SUBTRACTION, ADJUSTMENT',
   })
-  ManagementType: ManagementType;
+  stockManagementType: ManagementType;
 
   @IsNotEmpty()
   @IsInt()

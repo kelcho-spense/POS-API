@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { StockManagementService } from './stock-management.service';
 import {
@@ -13,7 +16,10 @@ import {
   UpdateStockManagementDto,
 } from './dto/stock-management.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from 'src/auth/common/decorators';
+import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 
+@Public()
 @ApiBearerAuth()
 @Controller('stock-management')
 export class StockManagementController {
@@ -22,7 +28,9 @@ export class StockManagementController {
   ) {}
 
   @Post()
-  create(@Body() createStockManagementDto: CreateStockManagementDto) {
+  create(
+    @Body(ValidationPipe) createStockManagementDto: CreateStockManagementDto,
+  ) {
     return this.stockManagementService.create(createStockManagementDto);
   }
 
@@ -31,21 +39,24 @@ export class StockManagementController {
     return this.stockManagementService.findAll();
   }
 
+  @UseGuards(ExistsViaIdGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stockManagementService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.stockManagementService.findOne(id);
   }
 
+  @UseGuards(ExistsViaIdGuard)
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateStockManagementDto: UpdateStockManagementDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateStockManagementDto: UpdateStockManagementDto,
   ) {
-    return this.stockManagementService.update(+id, updateStockManagementDto);
+    return this.stockManagementService.update(id, updateStockManagementDto);
   }
 
+  @UseGuards(ExistsViaIdGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stockManagementService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.stockManagementService.remove(id);
   }
 }

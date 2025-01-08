@@ -3,26 +3,44 @@ import {
   CreateStockManagementDto,
   UpdateStockManagementDto,
 } from './dto/stock-management.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { StockManagement } from '@prisma/client';
 
 @Injectable()
 export class StockManagementService {
-  create(createStockManagementDto: CreateStockManagementDto) {
-    return 'This action adds a new stockManagement';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(
+    createStockManagementData: CreateStockManagementDto,
+  ): Promise<StockManagement> {
+    return this.databaseService.stockManagement.create({
+      data: createStockManagementData,
+    });
   }
 
-  findAll() {
-    return `This action returns all stockManagement`;
+  async findAll(): Promise<StockManagement[]> {
+    return this.databaseService.stockManagement.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stockManagement`;
+  async findOne(stockManagementId: number): Promise<StockManagement> {
+    return this.databaseService.stockManagement.findUnique({
+      where: { stockManagementId },
+    });
   }
 
-  update(id: number, updateStockManagementDto: UpdateStockManagementDto) {
-    return `This action updates a #${id} stockManagement`;
+  async update(
+    stockManagementId: number,
+    updateStockManagementData: UpdateStockManagementDto,
+  ): Promise<StockManagement> {
+    return this.databaseService.stockManagement.update({
+      where: { stockManagementId },
+      data: updateStockManagementData,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stockManagement`;
+  async remove(stockManagementId: number): Promise<StockManagement> {
+    return this.databaseService.stockManagement.delete({
+      where: { stockManagementId },
+    });
   }
 }

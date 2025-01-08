@@ -167,12 +167,12 @@ model Inventory {
 }
 
 model StockManagement {
-  managementId   Int            @id @default(autoincrement())
+  stockManagementId   Int            @id @default(autoincrement())
   inventoryId    Int
-  managementType ManagementType
+  stockManagementType ManagementType
   quantityChange Int
   reference      String?
-  managementDate DateTime       @default(now())
+  stockManagementDate DateTime       @default(now())
   performedById  Int?
 
   // Relations
