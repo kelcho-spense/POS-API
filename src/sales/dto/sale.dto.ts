@@ -11,10 +11,6 @@ import {
 import { SaleStatus } from '@prisma/client';
 
 export class CreateSaleDto {
-  @IsNotEmpty()
-  @IsInt()
-  companyId: number;
-
   @IsOptional()
   @IsInt()
   customerId?: number;

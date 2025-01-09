@@ -16,6 +16,7 @@ import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/auth/common/decorators';
 import { ExistsViaIdGuard } from './guards/ExistsViaIdGuard';
 import { Sale } from '@prisma/client';
+import { CreateSaleItemDto } from 'src/sale-items/dto/sale-item.dto';
 
 @Public()
 @ApiBearerAuth()
@@ -55,5 +56,16 @@ export class SalesController {
   @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Sale> {
     return this.salesService.remove(id);
+  }
+
+  @Post('with-items')
+  createSaleWithItems(
+    @Body(ValidationPipe)
+    body: {
+      saleData: CreateSaleDto;
+      saleItems: CreateSaleItemDto[];
+    },
+  ) {
+    return this.salesService.createSaleWithItemsAndUpdateInventory(body);
   }
 }

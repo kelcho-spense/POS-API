@@ -210,3 +210,37 @@ Content-Type: application/json
 ### Purchase Order Operations ###
 ### patch Purchase Order transaction
 PATCH http://localhost:8000/api/v1/purchase-orders/1/receive-purchase-order
+
+### SAles Operations ###
+### Create Sale transaction
+POST http://localhost:8000/api/v1/sales/with-items
+Content-Type: application/json
+
+{
+  "salesData": {
+    "customerId": 1,
+    "userId": 1,
+    "subtotal": 1000.00,
+    "taxAmount": 0.00,
+    "discountAmount": 0.00,
+    "netAmount": 1000.00
+  },
+  "saleItems": [
+    {
+      "salesId": 1,
+      "productId": 1,
+      "quantity": 1,
+      "unitPrice": 1000.00,
+      "taxAmount": 0.00,
+      "subtotal": 1000.00
+    },
+    {
+      "salesId": 1,
+      "productId": 2,
+      "quantity": 1,
+      "unitPrice": 1000.00,
+      "taxAmount": 0.00,
+      "subtotal": 1000.00
+    }
+  ]
+}
