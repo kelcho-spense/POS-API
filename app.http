@@ -196,8 +196,8 @@ Content-Type: application/json
 DELETE http://localhost:8000/api/v1/products/1
 
 ### Stock Operations ###
-### Create Stock
-POST http://localhost:8000/api/v1/stock
+### Create Stock transaction
+POST http://localhost:8000/api/v1/stock-management/with-inventory-update
 Content-Type: application/json
 
 {
@@ -206,3 +206,7 @@ Content-Type: application/json
   "quantityChange": 10,
   "reference": "Stock Addition"
 }
+
+### Purchase Order Operations ###
+### patch Purchase Order transaction
+PATCH http://localhost:8000/api/v1/purchase-orders/1/receive-purchase-order

@@ -55,4 +55,11 @@ export class PurchaseOrdersController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.purchaseOrdersService.remove(id);
   }
+
+  @UseGuards(ExistsViaIdGuard)
+  @Patch(':id/receive-purchase-order')
+  @ApiParam({ name: 'id', type: Number })
+  async receivePurchaseOrder(@Param('id', ParseIntPipe) id: number) {
+    return this.purchaseOrdersService.receivePurchaseOrder(id);
+  }
 }
