@@ -67,3 +67,6 @@ E:\PersonalProjects\POS-API\src\inventory\inventory.service.ts:34:49
   33 async create(createInventoryData: CreateInventoryDto): Promise<Inventory> {
 → 34   return await this.databaseService.inventory.create(
 Foreign key constraint violated: `Inventory_productId_fkey (index)`
+1/8/25, 11:15 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /favicon.ico","error":"Not Found","statusCode":404}
+1/9/25, 11:36 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}
+1/9/25, 12:09 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}

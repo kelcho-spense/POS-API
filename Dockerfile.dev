@@ -1,0 +1,30 @@
+## Dockerfile for development environment
+
+# Start with Node.js 22 slim image as the base
+FROM node:22-alpine AS development
+
+# Install OpenSSL and netcat
+RUN apk add --no-cache openssl netcat-openbsd
+
+# Set up pnpm package manager environment variables
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+# Set working directory and copy source files
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+COPY . .
+
+# install all dependencies
+RUN pnpm install --frozen-lockfile
+
+# Generate Prisma client
+RUN pnpm prisma:generate
+
+# Expose port 8000 for the application
+EXPOSE 8000
+
+# Start the application
+CMD ["pnpm", "run", "start:dev"]
+

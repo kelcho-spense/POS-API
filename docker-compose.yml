@@ -1,14 +1,93 @@
 services:
-  pos-db:
-    image: postgres:16
+  # Development service
+  # Database service (PostgreSQL)
+  pos-db-dev-service:
+    image: postgres:17-alpine
+    container_name: pos-db-dev-container
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: pos-db
+      - '5433:5432'
+    env_file:
+      - .env.development
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data-dev-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pos-dev-network
+    profiles:
+      - development
+  # API service (NESTJS)
+  pos-api-dev-service:
+    container_name: pos-api-dev-container
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.development
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "./scripts/wait-for-it.sh pos-db-dev-service 5432 && pnpm prisma:migrate && pnpm run start:dev"
+    depends_on:
+      pos-db-dev-service:
+        condition: service_healthy
+    networks:
+      - pos-dev-network
+    profiles:
+      - development
+
+  # Production service
+  # Database service (PostgreSQL)
+  pos-db-prod-service:
+    image: postgres:17-alpine
+    container_name: pos-db-prod-container
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env.production
+    volumes:
+      - postgres-data-prod-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pos-prod-network
+    profiles:
+      - production
+  # API service (NESTJS)
+
+  pos-api-prod-service:
+    container_name: pos-api-prod-container
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: runner
+    env_file:
+      - .env.production
+    ports:
+      - '8080:8080'
+    command: sh -c "./scripts/wait-for-it.sh pos-db-prod-service 5432 && pnpm prisma:migrate && pnpm run start:prod"
+    depends_on:
+      pos-db-prod-service:
+        condition: service_healthy
+    networks:
+      - pos-prod-network
+    profiles:
+      - production
 
 volumes:
-  postgres-data:
+  postgres-data-dev-volume:
+  postgres-data-prod-volume:
+
+networks:
+  pos-dev-network:
+    driver: bridge
+  pos-prod-network:
+    driver: bridge

@@ -1,0 +1,53 @@
+## Dockerfile for production environment
+
+# Start with Node.js 22 slim image as the base
+FROM node:22-alpine AS production
+
+# Set up pnpm package manager environment variables
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+# Install OpenSSL 
+RUN apk add --no-cache openssl netcat-openbsd
+
+# Set working directory and copy source files
+WORKDIR /app
+COPY . .
+
+# Stage for production dependencies
+FROM production AS prod-deps
+# Install production dependencies using cache mount for better performance
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+# Build stage
+FROM production AS build
+# Install all dependencies (including dev dependencies)
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# Generate Prisma client
+RUN pnpm prisma:generate
+
+# Build the application
+RUN pnpm run build
+
+# Final stage
+FROM node:22-alpine AS runner
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN apk add --no-cache openssl netcat-openbsd
+
+WORKDIR /app
+
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/scripts ./scripts
+COPY package.json ./
+RUN chmod +x ./scripts/wait-for-it.sh
+
+EXPOSE 8080
+
+CMD ["pnpm", "run", "start:prod"]
