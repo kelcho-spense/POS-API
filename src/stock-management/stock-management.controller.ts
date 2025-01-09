@@ -34,6 +34,15 @@ export class StockManagementController {
     return this.stockManagementService.create(createStockManagementDto);
   }
 
+  @Post('with-inventory-update')
+  async createWithInventoryUpdate(
+    @Body(ValidationPipe) createStockManagementData: CreateStockManagementDto,
+  ) {
+    return this.stockManagementService.createStockMovementAndUpdateInventory(
+      createStockManagementData,
+    );
+  }
+
   @Get()
   findAll() {
     return this.stockManagementService.findAll();

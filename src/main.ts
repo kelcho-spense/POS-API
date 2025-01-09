@@ -24,7 +24,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Point of Sale API')
     .setDescription(
-      'The Point of Sale API The POS system is structured to manage various aspects of a retail operation, including:Company Management,User Management,Product ,Inventory Management,Order Management,Customer Management, Sales and Payments,Reporting and Analytics',
+      'asdasdasdThe Point of Sale API The POS system is structured to manage various aspects of a retail operation, including:Company Management,User Management,Product ,Inventory Management,Order Management,Customer Management, Sales and Payments,Reporting and Analytics',
     )
     .setVersion('1.0')
     .addBearerAuth()

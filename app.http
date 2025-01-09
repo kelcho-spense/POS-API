@@ -163,7 +163,7 @@ Content-Type: application/json
 ### Delete Inventory
 DELETE http://localhost:8000/api/v1/inventory/1
 
-### Product CRUD Operations ###
+### Product  Operations ###
 ### Create Product
 POST http://localhost:8000/api/v1/products
 Content-Type: application/json
@@ -195,4 +195,14 @@ Content-Type: application/json
 ### Delete Product
 DELETE http://localhost:8000/api/v1/products/1
 
+### Stock Operations ###
+### Create Stock
+POST http://localhost:8000/api/v1/stock
+Content-Type: application/json
 
+{
+  "inventoryId": 1,
+  "stockManagementType": ADDITION,
+  "quantityChange": 10,
+  "reference": "Stock Addition"
+}
