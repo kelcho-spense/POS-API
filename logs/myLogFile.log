@@ -70,3 +70,4 @@ Foreign key constraint violated: `Inventory_productId_fkey (index)`
 1/8/25, 11:15 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /favicon.ico","error":"Not Found","statusCode":404}
 1/9/25, 11:36 AM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}
 1/9/25, 12:09 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}
+1/9/25, 6:08 PM - IP: unknown - [AllExceptionsFilter]  Invalid `tx.sale.create()` invocation in /app/src/sales/sales.service.ts:50:34    47 }): Promise<Sale> {   48   return this.databaseService.$transaction(async (tx) => {   49     // 1. Create the Sale → 50     const sale = await tx.sale.create({            data: {          +   subtotal: Decimal            }          })  Argument `subtotal` is missing.

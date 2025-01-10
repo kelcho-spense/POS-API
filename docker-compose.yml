@@ -36,6 +36,18 @@ services:
     depends_on:
       pos-db-dev-service:
         condition: service_healthy
+      pos-redis-dev-service:
+        condition: service_started
+    networks:
+      - pos-dev-network
+    profiles:
+      - development
+  # REdis service
+  pos-redis-dev-service:
+    image: redis:alpine
+    container_name: pos-redis-dev-container
+    ports:
+      - '6379:6379'
     networks:
       - pos-dev-network
     profiles:
@@ -85,6 +97,8 @@ services:
 volumes:
   postgres-data-dev-volume:
   postgres-data-prod-volume:
+  pos-cache-volume:
+    driver: local
 
 networks:
   pos-dev-network:

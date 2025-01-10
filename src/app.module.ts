@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { MyLoggerModule } from './my-logger/my-logger.module';
 import { AuthModule } from './auth/auth.module';
 import { AtGuard } from './auth/common/guards';
@@ -21,6 +21,7 @@ import { StockManagementModule } from './stock-management/stock-management.modul
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { AppController } from './app.controller';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -34,6 +35,13 @@ import { AppController } from './app.controller';
         limit: 10, // 10 requests per TTL
       },
     ]),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: () => ({
+        ttl: 60,
+        max:150,
+      }),
+    }),
     MyLoggerModule,
     UsersModule,
     DatabaseModule,
@@ -54,14 +62,18 @@ import { AppController } from './app.controller';
   ],
   providers: [
     {
-      provide: APP_GUARD,
+      provide: APP_GUARD, // Register the ThrottlerGuard as a global guard to all controllers
       useClass: ThrottlerGuard,
     },
     {
-      provide: APP_GUARD,
+      provide: APP_GUARD, // Register the AtGuard as a global guard to all controllers
       useClass: AtGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR, // Register the CacheInterceptor as a global interceptor to all controllers
+      useClass: CacheInterceptor,
     },
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }
