@@ -41,24 +41,25 @@ import { AppService } from './app.service';
         limit: 100, // 10 requests per TTL
       },
     ]),
-    CacheModule.registerAsync({
-      useFactory: async () => {
-        const store = await redisStore({
-          socket: {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: parseInt(process.env.REDIS_PORT) || 6379,
-            // password: process.env.REDIS_PASSWORD,
-            // db: parseInt(process.env.REDIS_DB) || 0,
-          },
-        });
+    // CacheModule.registerAsync({
+    //   useFactory: async () => {
+    //     const store = await redisStore({
+    //       socket: {
+    //         host: process.env.REDIS_HOST || 'localhost',
+    //         port: parseInt(process.env.REDIS_PORT) || 6379,
+    //         // password: process.env.REDIS_PASSWORD,
+    //         // db: parseInt(process.env.REDIS_DB) || 0,
+    //       },
+    //     });
 
-        return {
-          store: store as unknown as CacheStore,
-          // make it 5 seconds for testing
-          ttl: parseInt(process.env.CACHE_TTL) || 10 * 1000, // 10 seconds
-        };
-      },
-    }),
+    //     return {
+    //       store: store as unknown as CacheStore,
+    //       // make it 5 seconds for testing
+    //       ttl: parseInt(process.env.CACHE_TTL) || 10 * 1000, // 10 seconds
+    //     };
+    //   },
+    // }),
+    CacheModule.register({ isGlobal: true }),
     MyLoggerModule,
     UsersModule,
     DatabaseModule,
