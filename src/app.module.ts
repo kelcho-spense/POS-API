@@ -21,13 +21,9 @@ import { StockManagementModule } from './stock-management/stock-management.modul
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { AppController } from './app.controller';
-import {
-  CacheInterceptor,
-  CacheModule,
-  CacheStore,
-} from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-yet';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { AppService } from './app.service';
+import { RedisOptions } from './redis';
 
 @Module({
   imports: [
@@ -41,25 +37,7 @@ import { AppService } from './app.service';
         limit: 100, // 10 requests per TTL
       },
     ]),
-    // CacheModule.registerAsync({
-    //   useFactory: async () => {
-    //     const store = await redisStore({
-    //       socket: {
-    //         host: process.env.REDIS_HOST || 'localhost',
-    //         port: parseInt(process.env.REDIS_PORT) || 6379,
-    //         // password: process.env.REDIS_PASSWORD,
-    //         // db: parseInt(process.env.REDIS_DB) || 0,
-    //       },
-    //     });
-
-    //     return {
-    //       store: store as unknown as CacheStore,
-    //       // make it 5 seconds for testing
-    //       ttl: parseInt(process.env.CACHE_TTL) || 10 * 1000, // 10 seconds
-    //     };
-    //   },
-    // }),
-    CacheModule.register({ isGlobal: true }),
+    CacheModule.registerAsync(RedisOptions),
     MyLoggerModule,
     UsersModule,
     DatabaseModule,
@@ -88,8 +66,8 @@ import { AppService } from './app.service';
       useClass: AtGuard,
     },
     {
-      provide: APP_INTERCEPTOR, // Register the CacheInterceptor as a global interceptor to all controllers
-      useClass: CacheInterceptor,
+      provide: APP_INTERCEPTOR, // Binding the interceptor globally
+      useClass: CacheInterceptor, // Use the CacheInterceptor
     },
     AppService,
   ],

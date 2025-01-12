@@ -50,9 +50,9 @@ importers:
       cache-manager:
         specifier: ^5.6.1
         version: 5.7.6
-      cache-manager-redis-yet:
-        specifier: ^5.1.5
-        version: 5.1.5
+      cache-manager-redis-store:
+        specifier: ^3.0.1
+        version: 3.0.1
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -1138,10 +1138,9 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
-  cache-manager-redis-yet@5.1.5:
-    resolution: {integrity: sha512-NYDxrWBoLXxxVPw4JuBriJW0f45+BVOAsgLiozRo4GoJQyoKPbueQWYStWqmO73/AeHJeWrV7Hzvk6vhCGHlqA==}
-    engines: {node: '>= 18'}
-    deprecated: With cache-manager v6 we now are using Keyv
+  cache-manager-redis-store@3.0.1:
+    resolution: {integrity: sha512-o560kw+dFqusC9lQJhcm6L2F2fMKobJ5af+FoR2PdnMVdpQ3f3Bz6qzvObTGyvoazQJxjQNWgMQeChP4vRTuXQ==}
+    engines: {node: '>= 16.18.0'}
 
   cache-manager@5.7.6:
     resolution: {integrity: sha512-wBxnBHjDxF1RXpHCBD6HGvKER003Ts7IIm0CHpggliHzN1RZditb7rXoduE1rplc2DEFYKxhLKgFuchXMJje9w==}
@@ -4433,15 +4432,8 @@ snapshots:
 
   bytes@3.1.2: {}
 
-  cache-manager-redis-yet@5.1.5:
+  cache-manager-redis-store@3.0.1:
     dependencies:
-      '@redis/bloom': 1.2.0(@redis/client@1.6.0)
-      '@redis/client': 1.6.0
-      '@redis/graph': 1.1.1(@redis/client@1.6.0)
-      '@redis/json': 1.0.7(@redis/client@1.6.0)
-      '@redis/search': 1.2.0(@redis/client@1.6.0)
-      '@redis/time-series': 1.1.0(@redis/client@1.6.0)
-      cache-manager: 5.7.6
       redis: 4.7.0
 
   cache-manager@5.7.6:

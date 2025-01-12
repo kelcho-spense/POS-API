@@ -90,3 +90,8 @@ Foreign key constraint violated: `Inventory_productId_fkey (index)`
 1/11/25, 8:54 PM - IP: unknown - [AllExceptionsFilter] ThrottlerException: Too Many Requests
 1/11/25, 8:54 PM - IP: unknown - [AllExceptionsFilter] ThrottlerException: Too Many Requests
 1/11/25, 8:54 PM - IP: unknown - [AllExceptionsFilter] ThrottlerException: Too Many Requests
+1/12/25, 5:16 PM - IP: unknown - [AllExceptionsFilter] {"message":"Category with ID 1 not found","error":"Not Found","statusCode":404}
+1/12/25, 9:31 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/12/25, 9:32 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/12/25, 9:32 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
+1/12/25, 10:12 PM - IP: unknown - [AllExceptionsFilter] cacheKey is not defined
