@@ -77,7 +77,6 @@ services:
     profiles:
       - production
   # API service (NESTJS)
-
   pos-api-prod-service:
     container_name: pos-api-prod-container
     build:
@@ -96,7 +95,19 @@ services:
       - pos-prod-network
     profiles:
       - production
-
+# REdis service
+  pos-redis-prod-service:
+    image: redis:alpine
+    container_name: pos-redis-dev-container
+    # command: ['redis-server', '--requirepass', '123']
+    ports:
+      - '6379:6379'
+    volumes:
+      - pos-cache-volume:/data
+    networks:
+      - pos-prod-network
+    profiles:
+      - production
 volumes:
   postgres-data-dev-volume:
   postgres-data-prod-volume:
