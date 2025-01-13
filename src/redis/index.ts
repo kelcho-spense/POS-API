@@ -12,6 +12,8 @@ export const RedisOptions: CacheModuleAsyncOptions = {
         port: parseInt(configService.get<string>('REDIS_PORT') || '6379', 10),
       },
       ttl: configService.get<number>('CACHE_TTL') || 30, // 30 seconds
+      username: configService.get<string>('REDIS_USERNAME'),
+      password: configService.get<string>('REDIS_PASSWORD'),
     });
     return {
       store: store as unknown as CacheStore,
