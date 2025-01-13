@@ -95,3 +95,5 @@ Foreign key constraint violated: `Inventory_productId_fkey (index)`
 1/12/25, 9:32 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
 1/12/25, 9:32 PM - IP: unknown - [AllExceptionsFilter] {"message":"Unauthorized","statusCode":401}
 1/12/25, 10:12 PM - IP: unknown - [AllExceptionsFilter] cacheKey is not defined
+1/13/25, 1:11 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /","error":"Not Found","statusCode":404}
+1/13/25, 1:11 PM - IP: unknown - [AllExceptionsFilter] {"message":"Cannot GET /favicon.ico","error":"Not Found","statusCode":404}
