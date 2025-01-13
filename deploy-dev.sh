@@ -6,7 +6,7 @@ set -e
 echo "Starting development deployment process..."
 
 # Make wait-for-it.sh executable
-chmod +x ./scripts/wait-for-it.sh
+# chmod +x ./scripts/wait-for-it.sh
 
 # Clean up existing containers and volumes
 echo "Cleaning up existing containers and volumes..."

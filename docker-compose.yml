@@ -32,7 +32,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: sh -c "./scripts/wait-for-it.sh pos-db-dev-service 5432 && pnpm prisma:migrate && pnpm run start:dev"
+    command: sh -c "pnpm prisma:migrate && pnpm run start:dev"
     depends_on:
       pos-db-dev-service:
         condition: service_healthy
@@ -94,7 +94,7 @@ services:
       - .env.production
     ports:
       - '8080:8080'
-    command: sh -c "./scripts/wait-for-it.sh pos-db-prod-service 5432 && pnpm prisma:migrate && pnpm run start:prod"
+    command: sh -c "pnpm prisma:migrate && pnpm run start:prod"
     depends_on:
       pos-db-prod-service:
         condition: service_healthy
